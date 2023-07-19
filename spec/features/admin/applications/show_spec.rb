@@ -17,7 +17,10 @@ describe "Admin/application/:id page:" do
   describe "When I visit an admin application show page ('/admin/applications/:id')" do
     it "For every pet that the application is for, I see a button to approve the application for that specific pet" do
       visit "/admin/applications/#{@app_1.id}"
-      expect(page).to have_button("Approve application")
+      
+      within "#pet_info-#{@pet_1.name}" do
+        expect(page).to have_button("Approve application")
+      end
     end
 
     it "When I click that button
@@ -28,23 +31,29 @@ describe "Admin/application/:id page:" do
       click_button("Approve application")
       
       expect(current_path).to eq("/admin/applications/#{@app_1.id}")
-      expect(page).to_not have_button("Approve application")
-      expect(page).to have_content("Pet Approved")
+      within "#pet_info-#{@pet_1.name}" do
+        expect(page).to_not have_button("Approve application")
+        expect(page).to have_content("Pet Approved")
+      end
     end
 
     it "For every pet that the application is for, I see a button to reject the application for that specific pet" do
       visit "/admin/applications/#{@app_1.id}"
       
-      expect(page).to have_button("Reject application")
+      within "#pet_info-#{@pet_1.name}" do
+        expect(page).to have_button("Reject application")
+      end
     end
 
     it "When I click that button Then I'm taken back to the admin application show page And next to the pet that I rejected, I do not see a button to approve or reject this pet And instead I see an indicator next to the pet that they have been rejected" do
       visit "/admin/applications/#{@app_1.id}"
       click_button("Reject application")
       expect(current_path).to eq("/admin/applications/#{@app_1.id}")
-      expect(page).to_not have_button("Reject application")
-      expect(page).to_not have_button("Approve application")
-      expect(page).to have_content("Pet Rejected")
+      within "#pet_info-#{@pet_1.name}" do
+        expect(page).to_not have_button("Reject application")
+        expect(page).to_not have_button("Approve application")
+        expect(page).to have_content("Pet Rejected")
+      end
     end
 
     it "When there are two applications in the system for the same pet
@@ -58,10 +67,12 @@ describe "Admin/application/:id page:" do
       click_button("Approve application")
       visit "/admin/applications/#{@app_3.id}"
       
-      expect(page).to_not have_content("Pet Rejected")
-      expect(page).to_not have_content("Pet Approved")
-      expect(page).to have_button("Reject application")
-      expect(page).to have_button("Approve application")
+      within "#pet_info-#{@pet_1.name}" do
+        expect(page).to_not have_content("Pet Rejected")
+        expect(page).to_not have_content("Pet Approved")
+        expect(page).to have_button("Reject application")
+        expect(page).to have_button("Approve application")
+      end
     end
   end
 end

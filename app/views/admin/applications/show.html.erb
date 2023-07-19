@@ -1,18 +1,22 @@
 <%= render partial: 'partials/application' %>
 <h3>Pets:</h3>
-<% @application.application_pets.each do |application_pet| %>
-  <% pet = application_pet.pet %>
-  <%= link_to "#{pet.name}", "/pets/#{pet.id}" %>
-  <% if application_pet.approved == "approved" %>
-    - Pet Approved
-  <% elsif application_pet.approved == "rejected"%>
-    - Pet Rejected
-  <% elsif application_pet.approved == "pending" %>
-    <%= button_to "Approve application", { controller: "/admin/applications", action: :update, pet_id: pet.id, confirm: "approve" }, method: :patch %>
-    <%= button_to "Reject application", { controller: "/admin/applications", action: :update, pet_id: pet.id, confirm: "reject" }, method: :patch %>
+<p>
+  <% @application.application_pets.each do |application_pet| %>
+    <% pet = application_pet.pet %>
+    <div id="pet_info-<%= pet.name %>">
+      <%= link_to "#{pet.name}", "/pets/#{pet.id}" %>
+      <% if application_pet.approved == "approved" %>
+        - Pet Approved
+      <% elsif application_pet.approved == "rejected"%>
+        - Pet Rejected
+      <% elsif application_pet.approved == "pending" %>
+        <%= button_to "Approve application", { controller: "/admin/applications", action: :update, pet_id: pet.id, confirm: "approve" }, method: :patch %>
+        <%= button_to "Reject application", { controller: "/admin/applications", action: :update, pet_id: pet.id, confirm: "reject" }, method: :patch %>
+      <% end %>
+      <br />
+    </div>
   <% end %>
-  <br />
-<% end %>
+</p>
 
 
 <% if @application.application_status != "Pending" %>
