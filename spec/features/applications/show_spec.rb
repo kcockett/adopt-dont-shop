@@ -105,8 +105,9 @@ RSpec.describe "application" do
       it "Then next to each Pet's name I see a button to 'Adopt this Pet'" do
         fill_in "Name", with: "Charlie"
         click_button "Submit"
-
-        expect(page).to have_button("Adopt this Pet")
+        within "#found_Charlie" do
+          expect(page).to have_button("Adopt this Pet")
+        end
       end
 
       it "When I click one of these buttons Then I am taken back to the application show page And I see the Pet I want to adopt listed on this application" do
