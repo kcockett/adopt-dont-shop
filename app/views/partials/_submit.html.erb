@@ -2,7 +2,7 @@
   <h3>Submit my application</h3>
   <p>
     <%= form_with url: "/applications/#{@application.id}", method: :patch, data: {turbo: false}, local: true, id: "submit_application" do |form| %>
-      <%= form.text_area :description, rows: 4, cols:40 %><br />
+      <%= form.text_area :description, rows: 4, cols:40, value: "Why would you make a good pet owner?" %><br />
       <%= form.submit "Submit my application" %>
     <% end %>
   </p>
